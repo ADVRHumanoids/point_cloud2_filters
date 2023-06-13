@@ -1,7 +1,5 @@
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.10.2)
 project(point_cloud2_filters)
-
-add_compile_options(-std=c++17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -16,9 +14,6 @@ find_package(catkin REQUIRED
     sensor_msgs
 )
 
-## System dependencies are found with CMake's conventions
-#find_package(PCL REQUIRED COMPONENTS common filters)
-
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -28,12 +23,7 @@ find_package(catkin REQUIRED
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-   INCLUDE_DIRS include
-   LIBRARIES ${PROJECT_NAME}_pass_through_filter_point_cloud2
-   CATKIN_DEPENDS roscpp pluginlib filters tf2_ros pcl_ros pcl_conversions sensor_msgs
-   #DEPENDS PCL
-)
+catkin_package()
 
 ###########
 ## Build ##
@@ -44,7 +34,6 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -54,9 +43,9 @@ add_library(pass_through_filter_point_cloud2
 
 target_link_libraries(pass_through_filter_point_cloud2
     ${catkin_LIBRARIES}
-    #${PCL_LIBRARIES}
 )
 add_dependencies(pass_through_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+class_loader_hide_library_symbols(pass_through_filter_point_cloud2)
 
 
 #############
@@ -68,10 +57,6 @@ install(TARGETS pass_through_filter_point_cloud2
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-# Install headers
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
 
 # Install plugins xml file
 install(FILES point_cloud2_filters_plugins.xml
