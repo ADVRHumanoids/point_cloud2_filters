@@ -2,8 +2,12 @@
 #define PASS_THROUGH_FILTER_HPP
 
 #include <ros/ros.h>
-//#include <filters/filters_base.hpp>
-#include "/opt/ros/noetic/include/filters/filter_base.hpp"
+
+#if ROS_VERSION_MINIMUM(1, 15, 0)
+    #include <filters/filter_base.hpp>
+#else
+    #include <filters/filter_base.h>
+#endif
 #include <tf2_ros/transform_listener.h>
 #include <pcl_ros/transforms.h>
 
