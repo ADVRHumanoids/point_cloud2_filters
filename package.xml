@@ -7,7 +7,7 @@
   <author email="toridebraus@gmail.com">Davide Torielli</author>
   <maintainer email="toridebraus@gmail.com">Davide Torielli</maintainer>
 
-  <license>GPLv3</license>
+  <license>BSD</license>
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
