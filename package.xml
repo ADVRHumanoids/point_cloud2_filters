@@ -26,6 +26,6 @@
 
 
   <export>
-    <filters plugin="${prefix}/pass_through_filter_plugin.xml" />
+    <filters plugin="${prefix}/point_cloud2_filters_plugins.xml" />
   </export>
 </package>
