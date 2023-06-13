@@ -43,6 +43,7 @@ private:
     tf2_ros::Buffer tf_buffer_;
     std::unique_ptr<tf2_ros::TransformListener> tf_listener_;
     
+    bool keep_organized_ = true;
     std::string reference_frame_ = "";
     std::string final_reference_frame_ = "";
     std::vector<double> x_limits_;
@@ -67,6 +68,10 @@ PassThroughFilterPointCloud2::~PassThroughFilterPointCloud2()
 
 bool PassThroughFilterPointCloud2::configure()
 {
+    
+    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("keep_organized"), keep_organized_);
+    pass_through_.setKeepOrganized(keep_organized_);
+    ROS_INFO("PassThroughFilterPointCloud2: Keep Organized='%d'", keep_organized_);
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("reference_frame"), reference_frame_))
     {

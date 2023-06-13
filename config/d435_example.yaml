@@ -3,6 +3,7 @@ cloud_filter_chain:
   - name: PassThroughFilter
     type: point_cloud2_filters/PassThroughFilterPointCloud2
     params:
+      keep_organized: True
       reference_frame: "D435_camera_link"
       x_limits: [0, 1]
       y_limits: [0, 0.4]
