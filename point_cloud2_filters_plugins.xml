@@ -1,7 +1,17 @@
-<library path="lib/libpass_through_filter_point_cloud2">
-    <class name="point_cloud2_filters/PassThroughFilterPointCloud2" type="point_cloud2_filters::PassThroughFilterPointCloud2" base_class_type="filters::FilterBase<sensor_msgs::PointCloud2>">
-        <description>
-            A simple Pass Through Filter for sensor_msgs/PointCloud2 messages
-        </description>
-    </class>
-</library>
+<class_libraries>
+    <library path="lib/libpass_through_filter_point_cloud2">
+        <class name="point_cloud2_filters/PassThroughFilterPointCloud2" type="point_cloud2_filters::PassThroughFilterPointCloud2" base_class_type="filters::FilterBase<sensor_msgs::PointCloud2>">
+            <description>
+                A simple Pass Through Filter for sensor_msgs/PointCloud2 messages
+            </description>
+        </class>
+    </library>
+    
+    <library path="lib/libcrop_box_filter_point_cloud2">
+        <class name="point_cloud2_filters/CropBoxFilterPointCloud2" type="point_cloud2_filters::CropBoxFilterPointCloud2" base_class_type="filters::FilterBase<sensor_msgs::PointCloud2>">
+            <description>
+                A Crop Box filter for sensor_msgs/PointCloud2 messages
+            </description>
+        </class>
+    </library>
+</class_libraries>

@@ -14,6 +14,8 @@ find_package(catkin REQUIRED
     sensor_msgs
 )
 
+find_package(Eigen3 REQUIRED)
+
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -34,9 +36,10 @@ catkin_package()
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
-## Declare a C++ library
+
 add_library(pass_through_filter_point_cloud2
   src/PassThroughFilterPointCloud2.cpp
 )
@@ -47,12 +50,22 @@ target_link_libraries(pass_through_filter_point_cloud2
 add_dependencies(pass_through_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 class_loader_hide_library_symbols(pass_through_filter_point_cloud2)
 
+add_library(crop_box_filter_point_cloud2
+  src/CropBoxFilterPointCloud2.cpp
+)
+
+target_link_libraries(crop_box_filter_point_cloud2
+    ${catkin_LIBRARIES}
+)
+add_dependencies(crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+class_loader_hide_library_symbols(crop_box_filter_point_cloud2)
+
 
 #############
 ## Install ##
 #############
 
-install(TARGETS pass_through_filter_point_cloud2
+install(TARGETS pass_through_filter_point_cloud2 crop_box_filter_point_cloud2
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
