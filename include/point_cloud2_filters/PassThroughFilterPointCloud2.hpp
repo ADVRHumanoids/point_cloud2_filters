@@ -135,7 +135,7 @@ bool PassThroughFilterPointCloud2::update( const sensor_msgs::PointCloud2& data_
     }
     if (z_limits_.size() > 0) {
         pass_through_.setInputCloud (cloud_out_);
-        pass_through_.setFilterFieldName ("x");
+        pass_through_.setFilterFieldName ("z");
         pass_through_.setFilterLimits (z_limits_.at(0), z_limits_.at(1));
         //pass_through_.setNegative (true);
         pass_through_.filter (*cloud_out_);
