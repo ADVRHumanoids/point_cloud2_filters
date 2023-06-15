@@ -39,11 +39,18 @@ include_directories(
   ${EIGEN3_INCLUDE_DIRS}
 )
 
+add_library(filter_point_cloud2
+  src/FilterPointCloud2.cpp
+)
+target_link_libraries(filter_point_cloud2
+    ${catkin_LIBRARIES}
+)
+add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+class_loader_hide_library_symbols(filter_point_cloud2)
 
 add_library(pass_through_filter_point_cloud2
   src/PassThroughFilterPointCloud2.cpp
 )
-
 target_link_libraries(pass_through_filter_point_cloud2
     ${catkin_LIBRARIES}
 )
@@ -56,6 +63,7 @@ add_library(crop_box_filter_point_cloud2
 
 target_link_libraries(crop_box_filter_point_cloud2
     ${catkin_LIBRARIES}
+    filter_point_cloud2
 )
 add_dependencies(crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 class_loader_hide_library_symbols(crop_box_filter_point_cloud2)
