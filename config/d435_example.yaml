@@ -21,3 +21,15 @@ cloud_filter_chain:
       min_z: -1
       max_z: 0.8
       output_frame: "D435_camera_depth_optical_frame"
+  - name: VoxelGridFilter
+    type: point_cloud2_filters/VoxelGridFilterPointCloud2
+    params:
+      keep_organized: True
+      input_frame: "D435_camera_link"
+      min_x: 0
+      max_x: 1
+      min_y: 0
+      max_y: 0.4
+      min_z: -1
+      max_z: 0.8
+      output_frame: "D435_camera_depth_optical_frame"

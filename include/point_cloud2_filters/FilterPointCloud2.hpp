@@ -68,12 +68,12 @@ bool FilterPointCloud2::configure()
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("input_frame"), input_frame_))
     {
-        ROS_INFO_NAMED(name_, "Using input_frame='%s'", input_frame_.c_str());
+        ROS_INFO_NAMED(name_, "[%s] Using input_frame='%s'", name_.c_str(), input_frame_.c_str());
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("output_frame"), output_frame_))
     {
-        ROS_INFO_NAMED(name_, "Using output_frame='%s'", output_frame_.c_str());
+        ROS_INFO_NAMED(name_, "[%s] Using output_frame='%s'", name_.c_str(), output_frame_.c_str());
     }
     
     

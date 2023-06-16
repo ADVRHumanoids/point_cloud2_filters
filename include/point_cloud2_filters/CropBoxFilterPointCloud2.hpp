@@ -46,50 +46,50 @@ bool CropBoxFilterPointCloud2::configure()
     FilterPointCloud2::configure();
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("keep_organized"), keep_organized_);
-    ROS_INFO_NAMED(name_, "Usin keep organized='%d'", keep_organized_);
+    ROS_INFO_NAMED(name_, "[%s] Using keep organized='%d'", name_.c_str(), keep_organized_);
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), negative_);
-    ROS_INFO_NAMED(name_, "Using negative='%d'", negative_);
+    ROS_INFO_NAMED(name_, "[%s] Using negative='%d'", name_.c_str(), negative_);
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("user_filter_value"), user_filter_value_)) {
-        ROS_INFO_NAMED(name_, "Using user_filter_value='%f'", user_filter_value_);
+        ROS_INFO_NAMED(name_, "[%s] Using user_filter_value='%f'", name_.c_str(), user_filter_value_);
 
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("min_x"), min_x_))
     {
         
-        ROS_INFO_NAMED(name_, "Using min_x=%f", min_x_);
+        ROS_INFO_NAMED(name_, "[%s] Using min_x=%f", name_.c_str(), min_x_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("max_x"), max_x_))
     {
         
-        ROS_INFO_NAMED(name_, "Using max_x=%f", max_x_);
+        ROS_INFO_NAMED(name_, "[%s] Using max_x=%f", name_.c_str(), max_x_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("min_y"), min_y_))
     {
         
-        ROS_INFO_NAMED(name_, "Using min_y=%f", min_y_);
+        ROS_INFO_NAMED(name_, "[%s] Using min_y=%f", name_.c_str(), min_y_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("max_y"), max_y_))
     {
         
-        ROS_INFO_NAMED(name_, "Using max_y=%f", max_y_);
+        ROS_INFO_NAMED(name_, "[%s] Using max_y=%f", name_.c_str(), max_y_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("min_z"), min_z_))
     {
         
-        ROS_INFO_NAMED(name_, "Using min_z=%f", min_z_);
+        ROS_INFO_NAMED(name_, "[%s] Using min_z=%f", name_.c_str(), min_z_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("max_z"), max_z_))
     {
         
-        ROS_INFO_NAMED(name_, "Using max_z=%f", max_z_);
+        ROS_INFO_NAMED(name_, "[%s] Using max_z=%f", name_.c_str(), max_z_);
     }
     
     crop_box_->setKeepOrganized(keep_organized_);
