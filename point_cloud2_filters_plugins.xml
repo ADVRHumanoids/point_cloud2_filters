@@ -14,4 +14,12 @@
             </description>
         </class>
     </library>
+    
+    <library path="lib/libvoxel_grid_filter_point_cloud2">
+        <class name="point_cloud2_filters/VoxelGridFilterPointCloud2" type="point_cloud2_filters::VoxelGridFilterPointCloud2" base_class_type="filters::FilterBase<sensor_msgs::PointCloud2>">
+            <description>
+                A Voxel Grid filter for sensor_msgs/PointCloud2 messages
+            </description>
+        </class>
+    </library>
 </class_libraries>
