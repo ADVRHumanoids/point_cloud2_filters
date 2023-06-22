@@ -48,15 +48,15 @@ target_link_libraries(filter_point_cloud2
 add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 class_loader_hide_library_symbols(filter_point_cloud2)
 
-add_library(filter_indices_point_cloud2
-  src/FilterIndicesPointCloud2.cpp
-)
-target_link_libraries(filter_indices_point_cloud2
-    ${catkin_LIBRARIES}
-    filter_point_cloud2
-)
-add_dependencies(filter_indices_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
-class_loader_hide_library_symbols(filter_indices_point_cloud2)
+# add_library(filter_indices_point_cloud2
+#   src/FilterIndicesPointCloud2.cpp
+# )
+# target_link_libraries(filter_indices_point_cloud2
+#     ${catkin_LIBRARIES}
+#     filter_point_cloud2
+# )
+# add_dependencies(filter_indices_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# class_loader_hide_library_symbols(filter_indices_point_cloud2)
 
 add_library(pass_through_filter_point_cloud2
   src/PassThroughFilterPointCloud2.cpp
@@ -73,7 +73,7 @@ add_library(crop_box_filter_point_cloud2
 
 target_link_libraries(crop_box_filter_point_cloud2
     ${catkin_LIBRARIES}
-    filter_indices_point_cloud2
+    filter_point_cloud2
 )
 add_dependencies(crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 class_loader_hide_library_symbols(crop_box_filter_point_cloud2)
@@ -94,7 +94,12 @@ class_loader_hide_library_symbols(voxel_grid_filter_point_cloud2)
 ## Install ##
 #############
 
-install(TARGETS filter_point_cloud2 filter_indices_point_cloud2 pass_through_filter_point_cloud2 crop_box_filter_point_cloud2 voxel_grid_filter_point_cloud2
+install(TARGETS 
+  filter_point_cloud2 
+  #filter_indices_point_cloud2
+  pass_through_filter_point_cloud2 
+  crop_box_filter_point_cloud2 
+  voxel_grid_filter_point_cloud2
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

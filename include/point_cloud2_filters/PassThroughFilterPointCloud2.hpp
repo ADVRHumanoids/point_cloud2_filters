@@ -47,19 +47,19 @@ bool PassThroughFilterPointCloud2::configure()
     FilterPointCloud2::configure();
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("keep_organized"), keep_organized_);
-    ROS_INFO_NAMED(name_, "Keep organized='%d'", keep_organized_);
+    ROS_INFO_NAMED(name_, "[%s] Using keep organized='%d'", name_.c_str(), keep_organized_);
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), negative_);
-    ROS_INFO_NAMED(name_, "Negative='%d'", negative_);
+    ROS_INFO_NAMED(name_, "[%s] Using negative='%d'", name_.c_str(), negative_);
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_field_name"), filter_field_name_);
-    ROS_INFO_NAMED(name_,"Using field name='%s'", filter_field_name_.c_str());
+    ROS_INFO_NAMED(name_,"[%s] Using field name='%s'", name_.c_str(), filter_field_name_.c_str());
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_limit_min"), filter_limit_min_);
-    ROS_INFO_NAMED(name_,"Using limit min='%f'", filter_limit_min_);
+    ROS_INFO_NAMED(name_,"[%s] Using limit min='%f'", name_.c_str(), filter_limit_min_);
     
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_limit_max"), filter_limit_max_);
-    ROS_INFO_NAMED(name_,"Using limit max='%f'", filter_limit_max_);
+    ROS_INFO_NAMED(name_,"[%s] Using limit max='%f'", name_.c_str(), filter_limit_max_);
     
     pass_through_->setKeepOrganized(keep_organized_);
     pass_through_->setNegative(negative_);

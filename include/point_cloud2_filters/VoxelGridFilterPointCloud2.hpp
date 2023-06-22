@@ -47,46 +47,46 @@ bool VoxelGridFilterPointCloud2::configure()
     FilterPointCloud2::configure();
 
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), negative_);
-    ROS_INFO_NAMED(name_, "Negative='%d'", negative_);
+    ROS_INFO_NAMED(name_, "[%s] Negative='%d'", name_.c_str(), negative_);
 
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("leaf_size"), leaf_size_))
     {
         if (leaf_size_.size() != 3) {
-            ROS_ERROR_NAMED(name_, "leaf_size argument not valid, please pass a vector with three elements");
+            ROS_ERROR_NAMED(name_, "[%s] leaf_size argument not valid, please pass a vector with three elements", name_.c_str());
             return false;
         }
     }
-    ROS_INFO_NAMED(name_, "Using leaf_size='[%f, %f, %f]'", leaf_size_.at(0), leaf_size_.at(1), leaf_size_.at(2));
+    ROS_INFO_NAMED(name_, "[%s] Using leaf_size='[%f, %f, %f]'", name_.c_str(), leaf_size_.at(0), leaf_size_.at(1), leaf_size_.at(2));
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("min_points_per_voxel"), min_points_per_voxel_))
     {
         
-        ROS_INFO_NAMED(name_, "Using min_points_per_voxel=%d", min_points_per_voxel_);
+        ROS_INFO_NAMED(name_, "[%s] Using min_points_per_voxel=%d", name_.c_str(), min_points_per_voxel_);
     }
 
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("downsample_all_data"), downsample_all_data_))
     {
         
-        ROS_INFO_NAMED(name_, "Using downsample_all_data=%d", downsample_all_data_);
+        ROS_INFO_NAMED(name_, "[%s] Using downsample_all_data=%d", name_.c_str(), downsample_all_data_);
     }
 
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_field_name"), filter_field_name_))
     {
         
-        ROS_INFO_NAMED(name_, "Using filter_field_name=%s", filter_field_name_.c_str());
+        ROS_INFO_NAMED(name_, "[%s] Using filter_field_name=%s", name_.c_str(), filter_field_name_.c_str());
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_limit_min"), filter_limit_min_))
     {
         
-        ROS_INFO_NAMED(name_, "Using filter_limit_min=%f", filter_limit_min_);
+        ROS_INFO_NAMED(name_, "[%s] Using filter_limit_min=%f", name_.c_str(), filter_limit_min_);
     }
     
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("filter_limit_max"), filter_limit_max_))
     {
         
-        ROS_INFO_NAMED(name_, "Using filter_limit_max=%f", filter_limit_max_);
+        ROS_INFO_NAMED(name_, "[%s] Using filter_limit_max=%f", name_.c_str(), filter_limit_max_);
     }
     
     voxel_grid_->setLeafSize(leaf_size_.at(0), leaf_size_.at(1), leaf_size_.at(2));

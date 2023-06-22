@@ -40,13 +40,13 @@ bool FilterIndicesPointCloud2::configure()
     FilterPointCloud2::configure();
 
     filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("keep_organized"), keep_organized_);
-    ROS_INFO_NAMED(name_, "Usin keep organized='%d'", keep_organized_);
+    ROS_INFO_NAMED(name_, "[%s] Using keep organized='%d'", name_.c_str(), keep_organized_);
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), negative_);
-    ROS_INFO_NAMED(name_, "Using negative='%d'", negative_);
+    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), name_, negative_);
+    ROS_INFO_NAMED(name_, "[%s] Using negative='%d'", name_.c_str(), negative_);
     
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("user_filter_value"), user_filter_value_)) {
-        ROS_INFO_NAMED(name_, "Using user_filter_value='%f'", user_filter_value_);
+    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("user_filter_value"), name_, user_filter_value_)) {
+        ROS_INFO_NAMED(name_, "[%s] Using user_filter_value='%f'", name_.c_str(), user_filter_value_);
 
     }
     
