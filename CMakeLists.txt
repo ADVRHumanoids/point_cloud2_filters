@@ -12,9 +12,18 @@ find_package(catkin REQUIRED
     pcl_conversions
     pcl_ros
     sensor_msgs
+    dynamic_reconfigure
 )
 
 find_package(Eigen3 REQUIRED)
+
+generate_dynamic_reconfigure_options(
+  cfg/FilterPointCloud2.cfg
+  cfg/FilterIndicesPointCloud2.cfg
+  cfg/PassThroughPointCloud2.cfg
+  cfg/CropBoxPointCloud2.cfg
+  cfg/VoxelGridPointCloud2.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -45,18 +54,18 @@ add_library(filter_point_cloud2
 target_link_libraries(filter_point_cloud2
     ${catkin_LIBRARIES}
 )
-add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 class_loader_hide_library_symbols(filter_point_cloud2)
 
-# add_library(filter_indices_point_cloud2
-#   src/FilterIndicesPointCloud2.cpp
-# )
-# target_link_libraries(filter_indices_point_cloud2
-#     ${catkin_LIBRARIES}
-#     filter_point_cloud2
-# )
-# add_dependencies(filter_indices_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
-# class_loader_hide_library_symbols(filter_indices_point_cloud2)
+add_library(filter_indices_point_cloud2
+  src/FilterIndicesPointCloud2.cpp
+)
+target_link_libraries(filter_indices_point_cloud2
+    ${catkin_LIBRARIES}
+    filter_point_cloud2
+)
+add_dependencies(filter_indices_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+class_loader_hide_library_symbols(filter_indices_point_cloud2)
 
 add_library(pass_through_filter_point_cloud2
   src/PassThroughFilterPointCloud2.cpp
@@ -64,7 +73,7 @@ add_library(pass_through_filter_point_cloud2
 target_link_libraries(pass_through_filter_point_cloud2
     ${catkin_LIBRARIES}
 )
-add_dependencies(pass_through_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(pass_through_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 class_loader_hide_library_symbols(pass_through_filter_point_cloud2)
 
 add_library(crop_box_filter_point_cloud2
@@ -75,7 +84,7 @@ target_link_libraries(crop_box_filter_point_cloud2
     ${catkin_LIBRARIES}
     filter_point_cloud2
 )
-add_dependencies(crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 class_loader_hide_library_symbols(crop_box_filter_point_cloud2)
 
 add_library(voxel_grid_filter_point_cloud2
@@ -86,7 +95,7 @@ target_link_libraries(voxel_grid_filter_point_cloud2
     ${catkin_LIBRARIES}
     filter_point_cloud2
 )
-add_dependencies(voxel_grid_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(voxel_grid_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 class_loader_hide_library_symbols(voxel_grid_filter_point_cloud2)
 
 

@@ -12,7 +12,7 @@ Wrapper for the [pcl::PassThrough](https://pointclouds.org/documentation/classpc
 #### Params
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
--   `keep_organized`*(bool, default: true)* Keep the point cloud organized ([`pcl::FilterIndices<PointT>::setKeepOrganized	(bool keep_organized)`](https://pointclouds.org/documentation/classpcl_1_1_filter_indices.html#a21eb00357056c0cc432cd03afa84d08c)
+-  `keep_organized`*(bool, default: true)* Keep the point cloud organized ([`pcl::FilterIndices<PointT>::setKeepOrganized	(bool keep_organized)`](https://pointclouds.org/documentation/classpcl_1_1_filter_indices.html#a21eb00357056c0cc432cd03afa84d08c)
 -  `negative`*(bool, default: false)* Set to true to return the data outside the min max limits
 -  `filter_field_name`*(str, default: z)* The field to be used for filtering data
 -  `filter_limit_min`*(double, default: 0)* The minimum allowed field value a point will be considered
