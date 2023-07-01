@@ -1,73 +1,28 @@
 #ifndef FILTER_POINT_CLOUD_HPP
 #define FILTER_POINT_CLOUD_HPP
 
-#include <memory>
-
-#include <ros/ros.h>
-
-#if ROS_VERSION_MINIMUM(1, 15, 0)
-    #include <filters/filter_base.hpp>
-#else
-    #include <filters/filter_base.h>
-#endif
-#include <tf2_ros/transform_listener.h>
-#include <pcl_ros/transforms.h>
-
-// Dynamic reconfigure
-#include <dynamic_reconfigure/server.h>
-#include <boost/thread/recursive_mutex.hpp>
-#include <point_cloud2_filters/FilterPointCloud2Config.h>
-
-#include <sensor_msgs/PointCloud2.h>
-#include <pcl_conversions/pcl_conversions.h>
+#include <point_cloud2_filters/FilterBasePointCloud2.hpp>
 #include <pcl/filters/filter.h>
 
 namespace point_cloud2_filters {
-    
-typedef pcl::PointXYZ Point;
-typedef pcl::PointCloud<Point> PointCloud;
 
-class FilterPointCloud2 : public filters::FilterBase<sensor_msgs::PointCloud2>
+class FilterPointCloud2 : public FilterBasePointCloud2
 {
 public:
     FilterPointCloud2();
     ~FilterPointCloud2();
 
 public:
-    virtual bool configure();
-
-    /** \brief Update the filter and return the data seperately
-    * \param data_in T array with length width
-    * \param data_out T array with length width
-    */
-    virtual bool update( const sensor_msgs::PointCloud2& data_in, sensor_msgs::PointCloud2& data_out) override;
     
 protected:
     std::shared_ptr<pcl::Filter<Point>> filter_;
-    std::string dynamic_reconfigure_namespace_root_;
-    
+
+    virtual bool execute() override;
+
 private:
-    PointCloud::Ptr cloud_out_;
-    
-    tf2_ros::Buffer tf_buffer_;
-    std::unique_ptr<tf2_ros::TransformListener> tf_listener_;
-    
-    /** \brief Pointer to a dynamic reconfigure service. */
-    std::unique_ptr<dynamic_reconfigure::Server<point_cloud2_filters::FilterPointCloud2Config>> dynamic_reconfigure_srv_;
-    dynamic_reconfigure::Server<point_cloud2_filters::FilterPointCloud2Config>::CallbackType dynamic_reconfigure_clbk_;
-    void dynamicReconfigureClbk(point_cloud2_filters::FilterPointCloud2Config &config, uint32_t level);
-    boost::recursive_mutex dynamic_reconfigure_mutex_;
-    
-    bool active_ = true;
-    std::string input_frame_ = "";
-    std::string output_frame_ = "";
 };
 
 FilterPointCloud2::FilterPointCloud2() {
-    
-    cloud_out_ = boost::make_shared<PointCloud>();
-    
-    tf_listener_ = std::make_unique<tf2_ros::TransformListener>(tf_buffer_);
     
 };
 
@@ -75,100 +30,17 @@ FilterPointCloud2::~FilterPointCloud2()
 {
 };
 
-bool FilterPointCloud2::configure()
+
+
+bool FilterPointCloud2::execute()
 {
     
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("active"), active_))
-    {
-        ROS_INFO_NAMED(getName(), "[%s] Using active='%d'", getName().c_str(), active_);
-    }
-    
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("input_frame"), input_frame_))
-    {
-        ROS_INFO_NAMED(getName(), "[%s] Using input_frame='%s'", getName().c_str(), input_frame_.c_str());
-    }
-    
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("output_frame"), output_frame_))
-    {
-        ROS_INFO_NAMED(getName(), "[%s] Using output_frame='%s'", getName().c_str(), output_frame_.c_str());
-    }
-    
-    //WARNING dynamic reconfigure, the base class one. Children can have their own server for their specific values, but
-    //be sure to use another namespace to be passed to the dyn server constructor (eg ros::NodeHandle(dynamic_reconfigure_namespace_root_ + "/" + getName())
-    dynamic_reconfigure_namespace_root_ = "/filter/" + getName();
-    dynamic_reconfigure_srv_ = std::make_unique<dynamic_reconfigure::Server<point_cloud2_filters::FilterPointCloud2Config>>(
-        dynamic_reconfigure_mutex_,
-        ros::NodeHandle(dynamic_reconfigure_namespace_root_ + "/filter"));
-    
-    dynamic_reconfigure_clbk_ = boost::bind(&FilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
-        
-    point_cloud2_filters::FilterPointCloud2Config initial_config;
-    initial_config.active = active_;
-    initial_config.input_frame = input_frame_;
-    initial_config.output_frame = output_frame_;
-    dynamic_reconfigure_srv_->setConfigDefault(initial_config);
-    dynamic_reconfigure_srv_->updateConfig(initial_config);
-    
-    //put this after updateConfig!
-    dynamic_reconfigure_srv_->setCallback(dynamic_reconfigure_clbk_);
+    filter_->setInputCloud (cloud_out_);
+    filter_->filter (*cloud_out_);
 
     return true;
     
 };
-
-bool FilterPointCloud2::update( const sensor_msgs::PointCloud2& data_in, sensor_msgs::PointCloud2& data_out)
-{
-    
-    if (active_) {
-        pcl::fromROSMsg(data_in, *cloud_out_);
-        
-        if (input_frame_.length() > 0) {
-            
-            pcl_ros::transformPointCloud (input_frame_, *cloud_out_, *cloud_out_, tf_buffer_);
-        } 
-        
-        filter_->setInputCloud (cloud_out_);
-        filter_->filter (*cloud_out_);
-
-        if (output_frame_.length() > 0) {
-            
-            pcl_ros::transformPointCloud (output_frame_, *cloud_out_, *cloud_out_, tf_buffer_);
-        } 
-        
-        pcl::toROSMsg(*cloud_out_, data_out);
-        
-    } else {
-        data_out = data_in;
-    }
-    
-
-    return true;
-    
-};
-
-void FilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::FilterPointCloud2Config &config, uint32_t /*level*/)
-{
-
-    boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
-
-    if (active_ != config.active)
-    {
-        active_ = config.active;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting active to: %d.", getName().c_str(), active_);
-    }
-    
-    if (input_frame_.compare(config.input_frame) != 0 )
-    {
-        input_frame_ = config.input_frame;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting the input TF frame to: %s.", getName().c_str(), input_frame_.c_str());
-    }
-    
-    if (output_frame_.compare(config.output_frame) != 0 )
-    {
-        output_frame_ = config.output_frame;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting the output TF frame to: %s.", getName().c_str(), output_frame_.c_str());
-    }
-}
 
 
 } //namespace point_cloud2_filters

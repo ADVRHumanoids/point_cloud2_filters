@@ -45,4 +45,20 @@ cloud_filter_chain:
       filter_limit_min: -1
       filter_limit_max: 1
       negative: False
+      
+  - name: ExtractPlane
+    type: point_cloud2_filters/SacSegmentationExtractFilterPointCloud2
+    params:
+      active: True
+      input_frame: "D435_camera_link"
+      output_frame: "D435_camera_depth_optical_frame"
+      model_type: 16
+      method_type: 0
+      axis_x: 0
+      axis_y: 0
+      axis_z: 1
+      eps_angle: 0.15
+      distance_threshold: 0.01
+      negative: True
+      optimize_coefficents: True
 

@@ -18,11 +18,12 @@ find_package(catkin REQUIRED
 find_package(Eigen3 REQUIRED)
 
 generate_dynamic_reconfigure_options(
-  cfg/FilterPointCloud2.cfg
+  cfg/FilterBasePointCloud2.cfg
   cfg/FilterIndicesPointCloud2.cfg
   cfg/PassThroughPointCloud2.cfg
   cfg/CropBoxPointCloud2.cfg
   cfg/VoxelGridPointCloud2.cfg
+  cfg/SacSegmentationExtractPointCloud2.cfg
 )
 
 ###################################
@@ -48,13 +49,23 @@ include_directories(
   ${EIGEN3_INCLUDE_DIRS}
 )
 
+add_library(filter_base_point_cloud2
+  src/FilterBasePointCloud2.cpp
+)
+target_link_libraries(filter_base_point_cloud2
+    ${catkin_LIBRARIES}
+)
+add_dependencies(filter_base_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+class_loader_hide_library_symbols(filter_base_point_cloud2)
+
 add_library(filter_point_cloud2
   src/FilterPointCloud2.cpp
 )
 target_link_libraries(filter_point_cloud2
     ${catkin_LIBRARIES}
+    filter_base_point_cloud2
 )
-add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_dependencies(filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 class_loader_hide_library_symbols(filter_point_cloud2)
 
 add_library(filter_indices_point_cloud2
@@ -98,17 +109,29 @@ target_link_libraries(voxel_grid_filter_point_cloud2
 add_dependencies(voxel_grid_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 class_loader_hide_library_symbols(voxel_grid_filter_point_cloud2)
 
+add_library(sac_segmentation_extract_filter_point_cloud2
+  src/SacSegmentationExtractFilterPointCloud2.cpp
+)
+
+target_link_libraries(sac_segmentation_extract_filter_point_cloud2
+    ${catkin_LIBRARIES}
+    filter_base_point_cloud2
+)
+add_dependencies(sac_segmentation_extract_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+class_loader_hide_library_symbols(sac_segmentation_extract_filter_point_cloud2)
 
 #############
 ## Install ##
 #############
 
 install(TARGETS 
+  filter_base_point_cloud2 
   filter_point_cloud2 
-  #filter_indices_point_cloud2
+  filter_indices_point_cloud2
   pass_through_filter_point_cloud2 
   crop_box_filter_point_cloud2 
   voxel_grid_filter_point_cloud2
+  sac_segmentation_extract_filter_point_cloud2
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
