@@ -2,6 +2,11 @@
 Changelog for package point_cloud2_filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Create LICENSE
+* Contributors: torydebra
+
 1.0.0 (2023-07-24)
 ------------------
 * Merge pull request `#5 <https://github.com/ADVRHumanoids/point_cloud2_filters/issues/5>`_ from ADVRHumanoids/devel
