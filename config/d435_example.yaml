@@ -1,23 +1,64 @@
 output_queue_size: 1
+
 cloud_filter_chain:
   - name: PassThroughFilter
     type: point_cloud2_filters/PassThroughFilterPointCloud2
     params:
+      active: True
+      input_frame: "D435_camera_link"
+      output_frame: "D435_camera_depth_optical_frame"
       keep_organized: True
-      reference_frame: "D435_camera_link"
-      x_limits: [0, 1]
-      y_limits: [0, 0.4]
-      z_limits: [-1, 0.8]
-      final_reference_frame: "D435_camera_depth_optical_frame"
+      negative: False
+      #user_filter_value: 3
+      filter_field_name: "z"
+      filter_limit_min: -5
+      filter_limit_max: 0.2
+      
   - name: CropBoxFilter
     type: point_cloud2_filters/CropBoxFilterPointCloud2
-    params:
-      keep_organized: True
+    params:          
+      active: True
       input_frame: "D435_camera_link"
+      output_frame: "D435_camera_depth_optical_frame"
+      keep_organized: True
+      negative: False
+      #user_filter_value: 5
       min_x: 0
       max_x: 1
       min_y: 0
       max_y: 0.4
       min_z: -1
       max_z: 0.8
+      
+  - name: VoxelGridFilter
+    type: point_cloud2_filters/VoxelGridFilterPointCloud2
+    params:
+      active: False
+      input_frame: "D435_camera_link"
       output_frame: "D435_camera_depth_optical_frame"
+      leaf_size_x: 0.1
+      leaf_size_y: 0.2
+      leaf_size_z: 0.1
+      min_points_per_voxel: 1
+      downsample_all_data: True
+      filter_field_name: "y"
+      filter_limit_min: -1
+      filter_limit_max: 1
+      negative: False
+      
+  - name: ExtractPlane
+    type: point_cloud2_filters/SacSegmentationExtractFilterPointCloud2
+    params:
+      active: True
+      input_frame: "D435_camera_link"
+      output_frame: "D435_camera_depth_optical_frame"
+      model_type: 16
+      method_type: 0
+      axis_x: 0
+      axis_y: 0
+      axis_z: 1
+      eps_angle: 0.15
+      distance_threshold: 0.01
+      negative: True
+      optimize_coefficents: True
+
