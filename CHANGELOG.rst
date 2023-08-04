@@ -2,8 +2,8 @@
 Changelog for package point_cloud2_filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.2 (2023-08-04)
+------------------
 * install example
 * Contributors: Davide Torielli
 
