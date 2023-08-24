@@ -47,14 +47,14 @@ Wrapper for the [pcl::VoxelGrid](https://pointclouds.org/documentation/classpcl_
 -  `leaf_size_x`*(double, default: 0.01)* The size of a leaf (on x) used for downsampling. Range: 0.0 to 1.0
 -  `leaf_size_y`*(double, default: 0.01)* The size of a leaf (on y) used for downsampling. Range: 0.0 to 1.0
 -  `leaf_size_z`*(double, default: 0.01)* The size of a leaf (on z) used for downsampling. Range: 0.0 to 1.0
--  `min_points_per_voxel`*(int, default:0)* et the minimum number of points required for a voxel to be used
+-  `min_points_per_voxel`*(int, default:0)* Set the minimum number of points required for a voxel to be used
 -  `downsample_all_data`*(int, default:0)* Set to true if all fields need to be downsampled, or false if just XYZ
 -  `filter_field_name`*(str, default: z)* The field to be used for filtering data, acting like a passthrough
 -  `filter_limit_min`*(double, default: 0)* The minimum allowed field value a point will be considered
 -  `filter_limit_min`*(double, default: 1)* The maximum allowed field value a point will be considered
 
 ### SacSegmentationExtractFilterPointCloud2
-Wrapper to extract a geometric model with [pcl::SACSegmentation]() and [pcl::ExtractIndices]().
+Wrapper to extract a geometric model with [pcl::SACSegmentation](https://pointclouds.org/documentation/classpcl_1_1_s_a_c_segmentation.html) and [pcl::ExtractIndices](https://pointclouds.org/documentation/classpcl_1_1_extract_indices.html).
 #### Params
 -  `active`*(bool, default: true)* Activate the filter or not.
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
