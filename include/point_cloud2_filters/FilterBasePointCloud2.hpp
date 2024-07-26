@@ -33,7 +33,7 @@ public:
     ~FilterBasePointCloud2();
 
 public:
-    virtual bool configure();
+    virtual bool configure() override;
 
     /** \brief Update the filter and return the data seperately
     * \param data_in T array with length width
@@ -52,6 +52,8 @@ private:
     
     tf2_ros::Buffer tf_buffer_;
     std::unique_ptr<tf2_ros::TransformListener> tf_listener_;
+    std::unique_ptr<ros::NodeHandle> nh_;
+    ros::Publisher pc_pub_;
     
     /** \brief Pointer to a dynamic reconfigure service. */
     std::unique_ptr<dynamic_reconfigure::Server<point_cloud2_filters::FilterBasePointCloud2Config>> dynamic_reconfigure_srv_;
@@ -62,6 +64,7 @@ private:
     bool active_ = true;
     std::string input_frame_ = "";
     std::string output_frame_ = "";
+    bool pub_cloud_ = false;
 };
 
 FilterBasePointCloud2::FilterBasePointCloud2() {
@@ -78,7 +81,9 @@ FilterBasePointCloud2::~FilterBasePointCloud2()
 
 bool FilterBasePointCloud2::configure()
 {
-    
+
+    nh_ = std::make_unique<ros::NodeHandle>("~");
+
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("active"), active_))
     {
         ROS_INFO_NAMED(getName(), "[%s] Using active='%d'", getName().c_str(), active_);
@@ -92,6 +97,12 @@ bool FilterBasePointCloud2::configure()
     if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("output_frame"), output_frame_))
     {
         ROS_INFO_NAMED(getName(), "[%s] Using output_frame='%s'", getName().c_str(), output_frame_.c_str());
+    }    
+    
+    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("pub_cloud"), pub_cloud_))
+    {
+        ROS_INFO_NAMED(getName(), "[%s] Using pub_cloud='%d'", getName().c_str(), pub_cloud_);
+        pc_pub_ = nh_->advertise<sensor_msgs::PointCloud2>(getName()+"/points", 10);
     }
     
     //WARNING dynamic reconfigure, the base class one. Children can have their own server for their specific values, but
@@ -107,6 +118,7 @@ bool FilterBasePointCloud2::configure()
     initial_config.active = active_;
     initial_config.input_frame = input_frame_;
     initial_config.output_frame = output_frame_;
+    initial_config.pub_cloud = pub_cloud_;
     dynamic_reconfigure_srv_->setConfigDefault(initial_config);
     dynamic_reconfigure_srv_->updateConfig(initial_config);
     
@@ -145,6 +157,10 @@ bool FilterBasePointCloud2::update( const sensor_msgs::PointCloud2& data_in, sen
     } else {
         data_out = data_in;
     }
+
+    if (pub_cloud_) {
+        pc_pub_.publish(data_out);
+    }
     
 
     return true;
@@ -172,6 +188,17 @@ void FilterBasePointCloud2::dynamicReconfigureClbk (point_cloud2_filters::Filter
     {
         output_frame_ = config.output_frame;
         ROS_DEBUG_NAMED (getName(), "[%s] Setting the output TF frame to: %s.", getName().c_str(), output_frame_.c_str());
+    }   
+    
+    if (pub_cloud_ != config.pub_cloud)
+    {
+        pub_cloud_ = config.pub_cloud;
+        if (pub_cloud_) {
+            pc_pub_ = nh_->advertise<sensor_msgs::PointCloud2>(getName()+"/points", 10);
+        } else {
+            pc_pub_.shutdown();
+        }
+        ROS_DEBUG_NAMED (getName(), "[%s] Setting pub_cloud to: %d.", getName().c_str(), pub_cloud_);
     }
 }
 

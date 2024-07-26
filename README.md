@@ -15,6 +15,7 @@ Wrapper for the [pcl::PassThrough](https://pointclouds.org/documentation/classpc
 -  `active`*(bool, default: true)* Activate the filter or not.
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
+-  `pub_cloud`*(bool, default: false)* Publish the cloud immediately after this filter. Note that this is a duplicate if the filter is the last in the chain
 -  `keep_organized`*(bool, default: true)* Keep the point cloud organized ([`pcl::FilterIndices<PointT>::setKeepOrganized	(bool keep_organized)`](https://pointclouds.org/documentation/classpcl_1_1_filter_indices.html#a21eb00357056c0cc432cd03afa84d08c)
 -  `negative`*(bool, default: false)* Set to true to return the data outside the min max limits
 -  `filter_field_name`*(str, default: z)* The field to be used for filtering data
@@ -28,6 +29,7 @@ Wrapper for the [pcl::CropBox](https://pointclouds.org/documentation/classpcl_1_
 -  `active`*(bool, default: true)* Activate the filter or not.
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
+-  `pub_cloud`*(bool, default: false)* Publish the cloud immediately after this filter. Note that this is a duplicate if the filter is the last in the chain
 -  `keep_organized`*(bool, default: true)* Keep the point cloud organized ([`pcl::FilterIndices<PointT>::setKeepOrganized	(bool keep_organized)`](https://pointclouds.org/documentation/classpcl_1_1_filter_indices.html#a21eb00357056c0cc432cd03afa84d08c)
 -  `negative`*(bool, default: false)* Set to true to return the data outside the min max limits
 -  `min_x`*(double, default: -1.0)* The minimum allowed x value a point will be considered from. Range: -1000.0 to 1000.0
@@ -43,6 +45,7 @@ Wrapper for the [pcl::VoxelGrid](https://pointclouds.org/documentation/classpcl_
 -  `active`*(bool, default: true)* Activate the filter or not.
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
+-  `pub_cloud`*(bool, default: false)* Publish the cloud immediately after this filter. Note that this is a duplicate if the filter is the last in the chain
 -  `negative`*(bool, default: false)* Set to true to return the data outside the min max limits
 -  `leaf_size_x`*(double, default: 0.01)* The size of a leaf (on x) used for downsampling. Range: 0.0 to 1.0
 -  `leaf_size_y`*(double, default: 0.01)* The size of a leaf (on y) used for downsampling. Range: 0.0 to 1.0
@@ -59,6 +62,7 @@ Wrapper to extract a geometric model with [pcl::SACSegmentation](https://pointcl
 -  `active`*(bool, default: true)* Activate the filter or not.
 -  `input_frame`*(str, default: "")* The input TF frame the data should be transformed into before processing
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
+-  `pub_cloud`*(bool, default: false)* Publish the cloud immediately after this filter. Note that this is a duplicate if the filter is the last in the chain
 -  `negative`*(bool, default: false)* Set whether to filter out (remove) the model (true) or all the rest (false).
 - `model_type` *(int, default: 16)* Geometric model to look for. Default to `SACMODEL_NORMAL_PARALLEL_PLANE`. Check [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html).
 - `method_type` *(int, default: 0)* Segmentation model to use for. Default to `SAC_RANSAC` . Check [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html).
