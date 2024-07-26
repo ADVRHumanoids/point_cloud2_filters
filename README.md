@@ -1,7 +1,8 @@
 # point_cloud_2_filters
 Wrappers for some of the [pcl filters](https://pointclouds.org/documentation/group__filters.html) for `sensor_msgs/PointCloud2` ROS messages. The implementation and usage is based on the [filter](https://wiki.ros.org/filters) and [sensor_filter](https://wiki.ros.org/sensor_filters) packages, so it is different from the wrappers of the PCL filters provided by the package [pcl_ros](https://wiki.ros.org/pcl_ros/Tutorials/filters).
 
-All the parameters are settable from the config file, but also online through the `dynamic_reconfigure` server.
+All the parameters are settable from the config file, but also online through the `dynamic_reconfigure` server. 
+Note that changing params with the `dynamic_reconfigure` server may take some seconds to have effect.
 
 No ROS2 version (yet).
 
