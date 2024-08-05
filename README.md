@@ -1,4 +1,6 @@
 # point_cloud_2_filters
+[![Build Status](https://build.ros.org/buildStatus/icon?job=Ndev__point_cloud2_filters__ubuntu_focal_amd64&subject=Noetic%20Build)](https://build.ros.org/job/Ndev__point_cloud2_filters__ubuntu_focal_amd64/)
+
 Wrappers for some of the [pcl filters](https://pointclouds.org/documentation/group__filters.html) for `sensor_msgs/PointCloud2` ROS messages. The implementation and usage is based on the [filter](https://wiki.ros.org/filters) and [sensor_filter](https://wiki.ros.org/sensor_filters) packages, so it is different from the wrappers of the PCL filters provided by the package [pcl_ros](https://wiki.ros.org/pcl_ros/Tutorials/filters).
 
 All the parameters are settable from the config file, but also online through the `dynamic_reconfigure` server. 
