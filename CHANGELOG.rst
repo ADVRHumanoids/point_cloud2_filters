@@ -2,6 +2,13 @@
 Changelog for package point_cloud2_filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
+* Updated README.md
+* option to pub cloud immediately after the filter execution
+* Contributors: Davide Torielli, torydebra
+
 1.0.2 (2023-08-04)
 ------------------
 * install example
