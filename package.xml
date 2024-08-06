@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>point_cloud2_filters</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <description>Filters for the sensor_msgs/PointCloud2 based on the filters and sensor_filters chains</description>
 
   <author email="toridebraus@gmail.com">Davide Torielli</author>
