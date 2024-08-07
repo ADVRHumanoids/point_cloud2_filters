@@ -23,7 +23,7 @@
 
 namespace point_cloud2_filters {
     
-typedef pcl::PointXYZ Point;
+typedef pcl::PointXYZRGB Point;
 typedef pcl::PointCloud<Point> PointCloud;
 
 class FilterBasePointCloud2 : public filters::FilterBase<sensor_msgs::PointCloud2>
