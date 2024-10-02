@@ -52,7 +52,7 @@ cloud_filter_chain:
       active: True
       input_frame: "D435_camera_link"
       output_frame: "D435_camera_depth_optical_frame"
-      model_type: 16
+      model_type: 15
       method_type: 0
       axis_x: 0
       axis_y: 0

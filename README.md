@@ -67,8 +67,9 @@ Wrapper to extract a geometric model with [pcl::SACSegmentation](https://pointcl
 -  `output_frame`*(str, default: "")* The output TF frame the data should be transformed into after processing
 -  `pub_cloud`*(bool, default: false)* Publish the cloud immediately after this filter. Note that this is a duplicate if the filter is the last in the chain. Useful for debug purposes and it will publish even if `active` is *false*.
 -  `negative`*(bool, default: false)* Set whether to filter out (remove) the model (true) or all the rest (false).
-- `model_type` *(int, default: 16)* Geometric model to look for. Default to `SACMODEL_NORMAL_PARALLEL_PLANE`. Check [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html). Please use integers according to the linked enum
-- `method_type` *(int, default: 0)* Segmentation model to use for. Default to `SAC_RANSAC` . Check [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html). Please use integers according to the linked enum
+- `model_type` *(int, default: 16)* Geometric model to look for. Default to `SACMODEL_PARALLEL_PLANE` (15). Please use integers according to the linked enum. 
+Some types require a SacSegmentationFromNormals which is currently not implemented. Check `SacSegmentationExtractPointCloud2.cfg` for the ones available. See also [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html) for params info. 
+- `method_type` *(int, default: 0)* Segmentation model to use for. Default to `SAC_RANSAC` (0) . Check [pcl official doc](https://pointclouds.org/documentation/group__sample__consensus.html). Please use integers according to the linked enum.
 -  `axis_x`*(double, default: 0.0)* The x component of the normal to the model to be removed. Range: 0.0 to 1.0
 -  `axis_y`*(double, default: 0.0)* The y component of the normal to the model to be removed. Range: 0.0 to 1.0
 -  `axis_z`*(double, default: 1.0)* The z component of the normal to the model to be removed. Range: 0.0 to 1.0
