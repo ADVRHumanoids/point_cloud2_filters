@@ -21,6 +21,7 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
 
+#include <chrono>
 namespace point_cloud2_filters {
     
 typedef pcl::PointXYZ Point;
@@ -65,6 +66,9 @@ private:
     std::string input_frame_ = "";
     std::string output_frame_ = "";
     bool pub_cloud_ = false;
+
+    bool log_time_ = false;
+    std::chrono::high_resolution_clock::time_point start_time_, stop_time_;
 };
 
 FilterBasePointCloud2::FilterBasePointCloud2() {
@@ -104,6 +108,10 @@ bool FilterBasePointCloud2::configure()
         ROS_INFO_NAMED(getName(), "[%s] Using pub_cloud='%d'", getName().c_str(), pub_cloud_);
         pc_pub_ = nh_->advertise<sensor_msgs::PointCloud2>(getName()+"/points", 10);
     }
+    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("log_time"), log_time_))
+    {
+        ROS_INFO_NAMED(getName(), "[%s] Using log_time_='%d'", getName().c_str(), log_time_);
+    }
     
     //WARNING dynamic reconfigure, the base class one. Children can have their own server for their specific values, but
     //be sure to use another namespace to be passed to the dyn server constructor (eg ros::NodeHandle(dynamic_reconfigure_namespace_root_ + "/" + getName())
@@ -131,7 +139,11 @@ bool FilterBasePointCloud2::configure()
 
 bool FilterBasePointCloud2::update( const sensor_msgs::PointCloud2& data_in, sensor_msgs::PointCloud2& data_out)
 {
-    
+
+    if (log_time_) {
+        start_time_ = std::chrono::high_resolution_clock::now();
+    }
+
     if (active_) {
         pcl::fromROSMsg(data_in, *cloud_out_);
         
@@ -161,7 +173,10 @@ bool FilterBasePointCloud2::update( const sensor_msgs::PointCloud2& data_in, sen
     if (pub_cloud_) {
         pc_pub_.publish(data_out);
     }
-    
+    if (log_time_) {
+        stop_time_ = std::chrono::high_resolution_clock::now();
+        ROS_INFO_NAMED(getName(), "[%s] took %ld ms", getName().c_str(), std::chrono::duration_cast<std::chrono::milliseconds>(stop_time_ - start_time_).count());
+    }
 
     return true;
     

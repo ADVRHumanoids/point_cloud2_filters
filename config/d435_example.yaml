@@ -13,6 +13,7 @@ cloud_filter_chain:
       filter_field_name: "z"
       filter_limit_min: -5
       filter_limit_max: 0.2
+      log_time: True
       
   - name: CropBoxFilter
     type: point_cloud2_filters/CropBoxFilterPointCloud2
