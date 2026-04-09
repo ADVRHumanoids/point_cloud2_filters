@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<package format="2">
+<package format="3">
   <name>point_cloud2_filters</name>
-  <version>1.0.3</version>
+  <version>2.0.0</version>
   <description>Filters for the sensor_msgs/PointCloud2 based on the filters and sensor_filters chains</description>
 
   <author email="toridebraus@gmail.com">Davide Torielli</author>
@@ -14,7 +14,7 @@
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/pass_through_filter</url> -->
 
-  <depend>roscpp</depend>
+  <depend>rclcpp</depend>
   <depend>pluginlib</depend>
   <depend>tf2_ros</depend>
   <depend>pcl_ros</depend>
@@ -22,10 +22,11 @@
   <depend>filters</depend>
   <depend>sensor_msgs</depend>
   
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
 
   <export>
+    <build_type>ament_cmake</build_type>
     <filters plugin="${prefix}/point_cloud2_filters_plugins.xml" />
   </export>
 </package>

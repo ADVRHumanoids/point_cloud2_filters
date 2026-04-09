@@ -49,10 +49,10 @@ private:
     int method_type_ = pcl::SAC_RANSAC;
 
     /** \brief Pointer to a dynamic reconfigure service. */
-    std::unique_ptr<dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>> dynamic_reconfigure_srv_;
-    dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>::CallbackType dynamic_reconfigure_clbk_;
-    void dynamicReconfigureClbk(point_cloud2_filters::SacSegmentationExtractPointCloud2Config &config, uint32_t level);
-    boost::recursive_mutex dynamic_reconfigure_mutex_;
+    // std::unique_ptr<dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>> dynamic_reconfigure_srv_;
+    // dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>::CallbackType dynamic_reconfigure_clbk_;
+    // void dynamicReconfigureClbk(point_cloud2_filters::SacSegmentationExtractPointCloud2Config &config, uint32_t level);
+    // boost::recursive_mutex dynamic_reconfigure_mutex_;
 
 };
 
@@ -73,70 +73,70 @@ bool SacSegmentationExtractFilterPointCloud2::configure()
 
     FilterBasePointCloud2::configure();
         
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("optimize_coefficents"), optimize_coefficents_))
+    if (filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("optimize_coefficents"), optimize_coefficents_))
     {
         sac_segmentation_.setOptimizeCoefficients (optimize_coefficents_);
-        ROS_INFO_NAMED(getName(), "[%s] Using optimize_coefficents=%d", getName().c_str(), optimize_coefficents_);
+        RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using optimize_coefficents=%d", getName().c_str(), optimize_coefficents_);
     }
     
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("max_iterations"), max_iterations_))
+    if (filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("max_iterations"), max_iterations_))
     {
         sac_segmentation_.setMaxIterations (max_iterations_);
-        ROS_INFO_NAMED(getName(), "[%s] Using max_iterations=%d", getName().c_str(), max_iterations_);
+        RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using max_iterations=%d", getName().c_str(), max_iterations_);
     }
     
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("probability"), probability_))
+    if (filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("probability"), probability_))
     {
         sac_segmentation_.setProbability (probability_);
-        ROS_INFO_NAMED(getName(), "[%s] Using probability=%f", getName().c_str(), probability_);
+        RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using probability=%f", getName().c_str(), probability_);
     }
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("axis_x"), axis_x_);
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("axis_y"), axis_y_);
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("axis_z"), axis_z_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("axis_x"), axis_x_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("axis_y"), axis_y_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("axis_z"), axis_z_);
     sac_segmentation_.setAxis(Eigen::Vector3f(axis_x_, axis_y_, axis_z_));
-    ROS_INFO_NAMED(getName(), "[%s] Using axis=[%f, %f, %f]", getName().c_str(), axis_x_, axis_y_, axis_z_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using axis=[%f, %f, %f]", getName().c_str(), axis_x_, axis_y_, axis_z_);
     
     bool using_radius = false;
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("min_radius"), min_radius_)) {
+    if (filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("min_radius"), min_radius_)) {
         using_radius = true;
     } 
-    if (filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("max_radius"), max_radius_)) {
+    if (filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("max_radius"), max_radius_)) {
         using_radius = true;
     }
     if (using_radius) {
         sac_segmentation_.setRadiusLimits(min_radius_, max_radius_);
-        ROS_INFO_NAMED(getName(), "[%s] Using radius limits=[%f, %f]", getName().c_str(), min_radius_, max_radius_);
+        RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using radius limits=[%f, %f]", getName().c_str(), min_radius_, max_radius_);
     }
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("eps_angle"), eps_angle_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("eps_angle"), eps_angle_);
     sac_segmentation_.setEpsAngle(eps_angle_);
-    ROS_INFO_NAMED(getName(), "[%s] Using eps_angle=%f", getName().c_str(), eps_angle_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using eps_angle=%f", getName().c_str(), eps_angle_);
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("distance_threshold"), distance_threshold_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("distance_threshold"), distance_threshold_);
     sac_segmentation_.setDistanceThreshold (distance_threshold_);
-    ROS_INFO_NAMED(getName(), "[%s] Using distance_threshold=%f", getName().c_str(), distance_threshold_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using distance_threshold=%f", getName().c_str(), distance_threshold_);
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("negative"), negative_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("negative"), negative_);
     extract_indices_.setNegative (negative_);
-    ROS_INFO_NAMED(getName(), "[%s] Using negative='%d'", getName().c_str(), negative_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using negative='%d'", getName().c_str(), negative_);
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("model_type"), model_type_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("model_type"), model_type_);
     sac_segmentation_.setModelType (model_type_);
-    ROS_INFO_NAMED(getName(), "[%s] Using model_type='%d'", getName().c_str(), model_type_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using model_type='%d'", getName().c_str(), model_type_);
     
-    filters::FilterBase<sensor_msgs::PointCloud2>::getParam(std::string("method_type"), method_type_);
+    filters::FilterBase<sensor_msgs::msg::PointCloud2>::getParam(std::string("method_type"), method_type_);
     sac_segmentation_.setMethodType (method_type_);
-    ROS_INFO_NAMED(getName(), "[%s] Using method_type='%d'", getName().c_str(), method_type_);
+    RCLCPP_INFO(logging_interface_->get_logger(), "[%s] Using method_type='%d'", getName().c_str(), method_type_);
     
 
     
     //dynamic reconfigure
-    dynamic_reconfigure_srv_ = std::make_unique<dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>>(
-        dynamic_reconfigure_mutex_,
-        ros::NodeHandle( dynamic_reconfigure_namespace_root_ + "/" + getName()));
+    // dynamic_reconfigure_srv_ = std::make_unique<dynamic_reconfigure::Server<point_cloud2_filters::SacSegmentationExtractPointCloud2Config>>(
+    //     dynamic_reconfigure_mutex_,
+    //     ros::NodeHandle( dynamic_reconfigure_namespace_root_ + "/" + getName()));
     
-    dynamic_reconfigure_clbk_ = boost::bind(&SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
+    // dynamic_reconfigure_clbk_ = boost::bind(&SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
 
     point_cloud2_filters::SacSegmentationExtractPointCloud2Config initial_config;
     initial_config.optimize_coefficents = optimize_coefficents_;
@@ -153,11 +153,11 @@ bool SacSegmentationExtractFilterPointCloud2::configure()
     initial_config.method_type = method_type_;
     initial_config.model_type = model_type_;
     
-    dynamic_reconfigure_srv_->setConfigDefault(initial_config);
-    dynamic_reconfigure_srv_->updateConfig(initial_config);
+    // dynamic_reconfigure_srv_->setConfigDefault(initial_config);
+    // dynamic_reconfigure_srv_->updateConfig(initial_config);
     
-    //put this after updateConfig!
-    dynamic_reconfigure_srv_->setCallback(dynamic_reconfigure_clbk_);
+    // //put this after updateConfig!
+    // dynamic_reconfigure_srv_->setCallback(dynamic_reconfigure_clbk_);
     
     return true;
 };
@@ -191,88 +191,88 @@ void SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk (point_clou
     {
         axis_to_update = true;
         axis_x_ = config.axis_x;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting axis_x to: %f.", getName().c_str(), axis_x_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_x to: %f.", getName().c_str(), axis_x_);
     }
     
     if (axis_y_ != config.axis_y)
     {
         axis_to_update = true;
         axis_y_ = config.axis_y;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting axis_y to: %f.", getName().c_str(), axis_y_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_y to: %f.", getName().c_str(), axis_y_);
     }
     
     if (axis_z_ != config.axis_z)
     {
         axis_to_update = true;
         axis_z_ = config.axis_z;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting axis_z to: %f.", getName().c_str(), axis_z_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_z to: %f.", getName().c_str(), axis_z_);
     }
     
     if (eps_angle_ != config.eps_angle)
     {
         eps_angle_ = config.eps_angle;
         sac_segmentation_.setEpsAngle(eps_angle_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting eps_angle to: %f.", getName().c_str(), eps_angle_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting eps_angle to: %f.", getName().c_str(), eps_angle_);
     }
     if (distance_threshold_ != config.distance_threshold)
     {
         distance_threshold_ = config.distance_threshold;
         sac_segmentation_.setDistanceThreshold (distance_threshold_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting distance_threshold to: %f.", getName().c_str(), distance_threshold_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting distance_threshold to: %f.", getName().c_str(), distance_threshold_);
     }
     if (optimize_coefficents_ != config.optimize_coefficents)
     {
         optimize_coefficents_ = config.optimize_coefficents;
         sac_segmentation_.setOptimizeCoefficients (optimize_coefficents_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting optimize_coefficents to: %d.", getName().c_str(), optimize_coefficents_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting optimize_coefficents to: %d.", getName().c_str(), optimize_coefficents_);
     }
     if (negative_ != config.negative)
     {
         negative_ = config.negative;
         extract_indices_.setNegative (negative_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
     }
     
     if (max_iterations_ != config.max_iterations)
     {
         max_iterations_ = config.max_iterations;
         sac_segmentation_.setMaxIterations (max_iterations_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting max_iterations to: %d.", getName().c_str(), max_iterations_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_iterations to: %d.", getName().c_str(), max_iterations_);
     }
     
     if (probability_ != config.probability)
     {
         probability_ = config.probability;
         sac_segmentation_.setProbability (probability_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting probability to: %f.", getName().c_str(), probability_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting probability to: %f.", getName().c_str(), probability_);
     }
     
     if (min_radius_ != config.min_radius)
     {
         min_radius_ = config.min_radius;
         radius_to_update = true;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting min_radius to: %f.", getName().c_str(), min_radius_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_radius to: %f.", getName().c_str(), min_radius_);
     }
     
     if (max_radius_ != config.max_radius)
     {
         max_radius_ = config.max_radius;
         radius_to_update = true;
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting max_radius to: %f.", getName().c_str(), max_radius_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_radius to: %f.", getName().c_str(), max_radius_);
     }
     
     if (model_type_ != config.model_type)
     {
         model_type_ = config.model_type;
         sac_segmentation_.setModelType(model_type_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting model_type to: %d.", getName().c_str(), model_type_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting model_type to: %d.", getName().c_str(), model_type_);
     }
     
     if (method_type_ != config.method_type)
     {
         method_type_ = config.method_type;
         sac_segmentation_.setMethodType(method_type_);
-        ROS_DEBUG_NAMED (getName(), "[%s] Setting method_type to: %d.", getName().c_str(), method_type_);
+        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting method_type to: %d.", getName().c_str(), method_type_);
     }
     
     if (axis_to_update) {
