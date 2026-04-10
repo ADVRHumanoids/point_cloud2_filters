@@ -86,7 +86,7 @@ target_link_libraries(${PROJECT_NAME}_filter_indices_point_cloud2
 #add_dependencies(${PROJECT_NAME}_filter_indices_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 #class_loader_hide_library_symbols(${PROJECT_NAME}_filter_indices_point_cloud2)
 
-add_library(pass_through_filter_point_cloud2
+add_library(${PROJECT_NAME}_pass_through_filter_point_cloud2
   src/PassThroughFilterPointCloud2.cpp
 )
 ament_target_dependencies(${PROJECT_NAME}_pass_through_filter_point_cloud2
@@ -121,7 +121,7 @@ target_link_libraries(${PROJECT_NAME}_crop_box_filter_point_cloud2
 #add_dependencies(${PROJECT_NAME}_crop_box_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 #class_loader_hide_library_symbols(${PROJECT_NAME}_crop_box_filter_point_cloud2)
 
-add_library(voxel_grid_filter_point_cloud2
+add_library(${PROJECT_NAME}_voxel_grid_filter_point_cloud2
   src/VoxelGridFilterPointCloud2.cpp
 )
 
@@ -139,7 +139,7 @@ target_link_libraries(${PROJECT_NAME}_voxel_grid_filter_point_cloud2
 #add_dependencies(${PROJECT_NAME}_voxel_grid_filter_point_cloud2 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 #class_loader_hide_library_symbols(${PROJECT_NAME}_voxel_grid_filter_point_cloud2)
 
-add_library(sac_segmentation_extract_filter_point_cloud2
+add_library(${PROJECT_NAME}_sac_segmentation_extract_filter_point_cloud2
   src/SacSegmentationExtractFilterPointCloud2.cpp
 )
 

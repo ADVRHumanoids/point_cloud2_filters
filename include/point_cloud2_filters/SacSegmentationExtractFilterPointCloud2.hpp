@@ -7,7 +7,7 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/filters/extract_indices.h>
 
-#include <point_cloud2_filters/SacSegmentationExtractPointCloud2Config.h>
+//#include <point_cloud2_filters/SacSegmentationExtractPointCloud2Config.h>
 
 namespace point_cloud2_filters {
 
@@ -59,8 +59,8 @@ private:
 SacSegmentationExtractFilterPointCloud2::SacSegmentationExtractFilterPointCloud2()
 {
     
-    coefficients_ = boost::make_shared<pcl::ModelCoefficients>();
-    inliers_ =  boost::make_shared<pcl::PointIndices>();
+    coefficients_ = std::make_shared<pcl::ModelCoefficients>();
+    inliers_ =  std::make_shared<pcl::PointIndices>();
     
 };
 
@@ -138,20 +138,20 @@ bool SacSegmentationExtractFilterPointCloud2::configure()
     
     // dynamic_reconfigure_clbk_ = boost::bind(&SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
 
-    point_cloud2_filters::SacSegmentationExtractPointCloud2Config initial_config;
-    initial_config.optimize_coefficents = optimize_coefficents_;
-    initial_config.axis_x = axis_x_;
-    initial_config.axis_y = axis_y_;
-    initial_config.axis_z = axis_z_;
-    initial_config.eps_angle = eps_angle_;
-    initial_config.distance_threshold = distance_threshold_;
-    initial_config.negative = negative_;
-    initial_config.max_iterations = max_iterations_;
-    initial_config.probability = probability_;
-    initial_config.min_radius = min_radius_;
-    initial_config.max_radius = max_radius_;
-    initial_config.method_type = method_type_;
-    initial_config.model_type = model_type_;
+    // point_cloud2_filters::SacSegmentationExtractPointCloud2Config initial_config;
+    // initial_config.optimize_coefficents = optimize_coefficents_;
+    // initial_config.axis_x = axis_x_;
+    // initial_config.axis_y = axis_y_;
+    // initial_config.axis_z = axis_z_;
+    // initial_config.eps_angle = eps_angle_;
+    // initial_config.distance_threshold = distance_threshold_;
+    // initial_config.negative = negative_;
+    // initial_config.max_iterations = max_iterations_;
+    // initial_config.probability = probability_;
+    // initial_config.min_radius = min_radius_;
+    // initial_config.max_radius = max_radius_;
+    // initial_config.method_type = method_type_;
+    // initial_config.model_type = model_type_;
     
     // dynamic_reconfigure_srv_->setConfigDefault(initial_config);
     // dynamic_reconfigure_srv_->updateConfig(initial_config);
@@ -180,112 +180,112 @@ bool SacSegmentationExtractFilterPointCloud2::execute()
     
 };
 
-void SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::SacSegmentationExtractPointCloud2Config &config, uint32_t /*level*/)
-{
+// void SacSegmentationExtractFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::SacSegmentationExtractPointCloud2Config &config, uint32_t /*level*/)
+// {
 
-    boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
-    bool axis_to_update = false;
-    bool radius_to_update = false;
+//     boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
+//     bool axis_to_update = false;
+//     bool radius_to_update = false;
     
-    if (axis_x_ != config.axis_x)
-    {
-        axis_to_update = true;
-        axis_x_ = config.axis_x;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_x to: %f.", getName().c_str(), axis_x_);
-    }
+//     if (axis_x_ != config.axis_x)
+//     {
+//         axis_to_update = true;
+//         axis_x_ = config.axis_x;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_x to: %f.", getName().c_str(), axis_x_);
+//     }
     
-    if (axis_y_ != config.axis_y)
-    {
-        axis_to_update = true;
-        axis_y_ = config.axis_y;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_y to: %f.", getName().c_str(), axis_y_);
-    }
+//     if (axis_y_ != config.axis_y)
+//     {
+//         axis_to_update = true;
+//         axis_y_ = config.axis_y;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_y to: %f.", getName().c_str(), axis_y_);
+//     }
     
-    if (axis_z_ != config.axis_z)
-    {
-        axis_to_update = true;
-        axis_z_ = config.axis_z;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_z to: %f.", getName().c_str(), axis_z_);
-    }
+//     if (axis_z_ != config.axis_z)
+//     {
+//         axis_to_update = true;
+//         axis_z_ = config.axis_z;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting axis_z to: %f.", getName().c_str(), axis_z_);
+//     }
     
-    if (eps_angle_ != config.eps_angle)
-    {
-        eps_angle_ = config.eps_angle;
-        sac_segmentation_.setEpsAngle(eps_angle_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting eps_angle to: %f.", getName().c_str(), eps_angle_);
-    }
-    if (distance_threshold_ != config.distance_threshold)
-    {
-        distance_threshold_ = config.distance_threshold;
-        sac_segmentation_.setDistanceThreshold (distance_threshold_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting distance_threshold to: %f.", getName().c_str(), distance_threshold_);
-    }
-    if (optimize_coefficents_ != config.optimize_coefficents)
-    {
-        optimize_coefficents_ = config.optimize_coefficents;
-        sac_segmentation_.setOptimizeCoefficients (optimize_coefficents_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting optimize_coefficents to: %d.", getName().c_str(), optimize_coefficents_);
-    }
-    if (negative_ != config.negative)
-    {
-        negative_ = config.negative;
-        extract_indices_.setNegative (negative_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
-    }
+//     if (eps_angle_ != config.eps_angle)
+//     {
+//         eps_angle_ = config.eps_angle;
+//         sac_segmentation_.setEpsAngle(eps_angle_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting eps_angle to: %f.", getName().c_str(), eps_angle_);
+//     }
+//     if (distance_threshold_ != config.distance_threshold)
+//     {
+//         distance_threshold_ = config.distance_threshold;
+//         sac_segmentation_.setDistanceThreshold (distance_threshold_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting distance_threshold to: %f.", getName().c_str(), distance_threshold_);
+//     }
+//     if (optimize_coefficents_ != config.optimize_coefficents)
+//     {
+//         optimize_coefficents_ = config.optimize_coefficents;
+//         sac_segmentation_.setOptimizeCoefficients (optimize_coefficents_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting optimize_coefficents to: %d.", getName().c_str(), optimize_coefficents_);
+//     }
+//     if (negative_ != config.negative)
+//     {
+//         negative_ = config.negative;
+//         extract_indices_.setNegative (negative_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
+//     }
     
-    if (max_iterations_ != config.max_iterations)
-    {
-        max_iterations_ = config.max_iterations;
-        sac_segmentation_.setMaxIterations (max_iterations_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_iterations to: %d.", getName().c_str(), max_iterations_);
-    }
+//     if (max_iterations_ != config.max_iterations)
+//     {
+//         max_iterations_ = config.max_iterations;
+//         sac_segmentation_.setMaxIterations (max_iterations_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_iterations to: %d.", getName().c_str(), max_iterations_);
+//     }
     
-    if (probability_ != config.probability)
-    {
-        probability_ = config.probability;
-        sac_segmentation_.setProbability (probability_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting probability to: %f.", getName().c_str(), probability_);
-    }
+//     if (probability_ != config.probability)
+//     {
+//         probability_ = config.probability;
+//         sac_segmentation_.setProbability (probability_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting probability to: %f.", getName().c_str(), probability_);
+//     }
     
-    if (min_radius_ != config.min_radius)
-    {
-        min_radius_ = config.min_radius;
-        radius_to_update = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_radius to: %f.", getName().c_str(), min_radius_);
-    }
+//     if (min_radius_ != config.min_radius)
+//     {
+//         min_radius_ = config.min_radius;
+//         radius_to_update = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_radius to: %f.", getName().c_str(), min_radius_);
+//     }
     
-    if (max_radius_ != config.max_radius)
-    {
-        max_radius_ = config.max_radius;
-        radius_to_update = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_radius to: %f.", getName().c_str(), max_radius_);
-    }
+//     if (max_radius_ != config.max_radius)
+//     {
+//         max_radius_ = config.max_radius;
+//         radius_to_update = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_radius to: %f.", getName().c_str(), max_radius_);
+//     }
     
-    if (model_type_ != config.model_type)
-    {
-        model_type_ = config.model_type;
-        sac_segmentation_.setModelType(model_type_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting model_type to: %d.", getName().c_str(), model_type_);
-    }
+//     if (model_type_ != config.model_type)
+//     {
+//         model_type_ = config.model_type;
+//         sac_segmentation_.setModelType(model_type_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting model_type to: %d.", getName().c_str(), model_type_);
+//     }
     
-    if (method_type_ != config.method_type)
-    {
-        method_type_ = config.method_type;
-        sac_segmentation_.setMethodType(method_type_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting method_type to: %d.", getName().c_str(), method_type_);
-    }
+//     if (method_type_ != config.method_type)
+//     {
+//         method_type_ = config.method_type;
+//         sac_segmentation_.setMethodType(method_type_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting method_type to: %d.", getName().c_str(), method_type_);
+//     }
     
-    if (axis_to_update) {
+//     if (axis_to_update) {
         
-        sac_segmentation_.setAxis(Eigen::Vector3f(axis_x_, axis_y_, axis_z_));
-    }
+//         sac_segmentation_.setAxis(Eigen::Vector3f(axis_x_, axis_y_, axis_z_));
+//     }
     
-    if (radius_to_update) {
+//     if (radius_to_update) {
         
-        sac_segmentation_.setRadiusLimits(min_radius_, max_radius_);
-    }
+//         sac_segmentation_.setRadiusLimits(min_radius_, max_radius_);
+//     }
 
-}
+// }
 
 
 } //namespace point_cloud2_filters

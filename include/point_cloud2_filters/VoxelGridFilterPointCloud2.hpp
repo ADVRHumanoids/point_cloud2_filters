@@ -4,7 +4,7 @@
 #include <point_cloud2_filters/FilterPointCloud2.hpp>
 #include <pcl/filters/voxel_grid.h>
 
-#include <point_cloud2_filters/VoxelGridPointCloud2Config.h>
+//#include <point_cloud2_filters/VoxelGridPointCloud2Config.h>
 
 namespace point_cloud2_filters {
 
@@ -104,16 +104,16 @@ bool VoxelGridFilterPointCloud2::configure()
     
     // dynamic_reconfigure_clbk_ = boost::bind(&VoxelGridFilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
 
-    point_cloud2_filters::VoxelGridPointCloud2Config initial_config;
-    initial_config.negative = negative_;
-    initial_config.leaf_size_x = leaf_size_x_;
-    initial_config.leaf_size_y = leaf_size_y_;
-    initial_config.leaf_size_z = leaf_size_z_;
-    initial_config.min_points_per_voxel = min_points_per_voxel_;
-    initial_config.downsample_all_data = downsample_all_data_;
-    initial_config.filter_field_name = filter_field_name_;
-    initial_config.filter_limit_min = filter_limit_min_;
-    initial_config.filter_limit_max = filter_limit_max_;
+    // point_cloud2_filters::VoxelGridPointCloud2Config initial_config;
+    // initial_config.negative = negative_;
+    // initial_config.leaf_size_x = leaf_size_x_;
+    // initial_config.leaf_size_y = leaf_size_y_;
+    // initial_config.leaf_size_z = leaf_size_z_;
+    // initial_config.min_points_per_voxel = min_points_per_voxel_;
+    // initial_config.downsample_all_data = downsample_all_data_;
+    // initial_config.filter_field_name = filter_field_name_;
+    // initial_config.filter_limit_min = filter_limit_min_;
+    // initial_config.filter_limit_max = filter_limit_max_;
 
     // dynamic_reconfigure_srv_->setConfigDefault(initial_config);
     // dynamic_reconfigure_srv_->updateConfig(initial_config);
@@ -125,81 +125,78 @@ bool VoxelGridFilterPointCloud2::configure()
     
 };
 
-void VoxelGridFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::VoxelGridPointCloud2Config &config, uint32_t /*level*/)
-{
+// void VoxelGridFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::VoxelGridPointCloud2Config &config, uint32_t /*level*/)
+// {
 
-    boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
-    bool to_update_limits = false;
-    bool to_update_leaf_size = false;
+//     boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
+//     bool to_update_limits = false;
+//     bool to_update_leaf_size = false;
     
-    if (leaf_size_x_ != config.leaf_size_x)
-    {
-        leaf_size_x_ = config.leaf_size_x;
-        to_update_leaf_size = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_x to: %f.", getName().c_str(), leaf_size_x_);
-    }
-    if (leaf_size_y_ != config.leaf_size_y)
-    {
-        leaf_size_y_ = config.leaf_size_y;
-        to_update_leaf_size = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_y to: %f.", getName().c_str(), leaf_size_y_);
-    }
-    if (leaf_size_z_ != config.leaf_size_z)
-    {
-        leaf_size_z_ = config.leaf_size_z;
-        to_update_leaf_size = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_z to: %f.", getName().c_str(), leaf_size_z_);
-    }
+//     if (leaf_size_x_ != config.leaf_size_x)
+//     {
+//         leaf_size_x_ = config.leaf_size_x;
+//         to_update_leaf_size = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_x to: %f.", getName().c_str(), leaf_size_x_);
+//     }
+//     if (leaf_size_y_ != config.leaf_size_y)
+//     {
+//         leaf_size_y_ = config.leaf_size_y;
+//         to_update_leaf_size = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_y to: %f.", getName().c_str(), leaf_size_y_);
+//     }
+//     if (leaf_size_z_ != config.leaf_size_z)
+//     {
+//         leaf_size_z_ = config.leaf_size_z;
+//         to_update_leaf_size = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting leaf_size_z to: %f.", getName().c_str(), leaf_size_z_);
+//     }
     
-    if (min_points_per_voxel_ != config.min_points_per_voxel)
-    {
-        min_points_per_voxel_ = config.min_points_per_voxel;
-        voxel_grid_->setMinimumPointsNumberPerVoxel(min_points_per_voxel_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_points_per_voxel to: %d.", getName().c_str(), min_points_per_voxel_);
-    }
+//     if (min_points_per_voxel_ != config.min_points_per_voxel)
+//     {
+//         min_points_per_voxel_ = config.min_points_per_voxel;
+//         voxel_grid_->setMinimumPointsNumberPerVoxel(min_points_per_voxel_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_points_per_voxel to: %d.", getName().c_str(), min_points_per_voxel_);
+//     }
     
-    if (downsample_all_data_ != config.downsample_all_data)
-    {
-        downsample_all_data_ = config.downsample_all_data;
-        voxel_grid_->setDownsampleAllData(downsample_all_data_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting downsample_all_data to: %d.", getName().c_str(), downsample_all_data_);
-    }
-    if (filter_field_name_.compare(config.filter_field_name) != 0)
-    {
-        filter_field_name_ = config.filter_field_name;
-        voxel_grid_->setFilterFieldName(filter_field_name_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_field_name to: %s.", getName().c_str(), filter_field_name_.c_str());
-    }
-    if (filter_limit_min_ != config.filter_limit_min)
-    {
-        filter_limit_min_ = config.filter_limit_min;
-        to_update_limits = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_limit_min to: %f.", getName().c_str(), filter_limit_min_);
-    }
-    if (filter_limit_max_ != config.filter_limit_max)
-    {
-        filter_limit_max_ = config.filter_limit_max;
-        to_update_limits = true;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_limit_max to: %f.", getName().c_str(), filter_limit_max_);
-    }
-    if (negative_ != config.negative)
-    {
-        negative_ = config.negative;
-        voxel_grid_->setFilterLimitsNegative(negative_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
-    }
+//     if (downsample_all_data_ != config.downsample_all_data)
+//     {
+//         downsample_all_data_ = config.downsample_all_data;
+//         voxel_grid_->setDownsampleAllData(downsample_all_data_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting downsample_all_data to: %d.", getName().c_str(), downsample_all_data_);
+//     }
+//     if (filter_field_name_.compare(config.filter_field_name) != 0)
+//     {
+//         filter_field_name_ = config.filter_field_name;
+//         voxel_grid_->setFilterFieldName(filter_field_name_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_field_name to: %s.", getName().c_str(), filter_field_name_.c_str());
+//     }
+//     if (filter_limit_min_ != config.filter_limit_min)
+//     {
+//         filter_limit_min_ = config.filter_limit_min;
+//         to_update_limits = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_limit_min to: %f.", getName().c_str(), filter_limit_min_);
+//     }
+//     if (filter_limit_max_ != config.filter_limit_max)
+//     {
+//         filter_limit_max_ = config.filter_limit_max;
+//         to_update_limits = true;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting filter_limit_max to: %f.", getName().c_str(), filter_limit_max_);
+//     }
+//     if (negative_ != config.negative)
+//     {
+//         negative_ = config.negative;
+//         voxel_grid_->setFilterLimitsNegative(negative_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
+//     }
     
     
-    if (to_update_limits) {
-        voxel_grid_->setFilterLimits(filter_limit_min_, filter_limit_max_);
-    }
-    if (to_update_leaf_size) {
-        voxel_grid_->setLeafSize(leaf_size_x_, leaf_size_y_, leaf_size_z_);
-    }
-    
-
-
-}
+//     if (to_update_limits) {
+//         voxel_grid_->setFilterLimits(filter_limit_min_, filter_limit_max_);
+//     }
+//     if (to_update_leaf_size) {
+//         voxel_grid_->setLeafSize(leaf_size_x_, leaf_size_y_, leaf_size_z_);
+//     }
+// }
 
 
 } //namespace point_cloud2_filters

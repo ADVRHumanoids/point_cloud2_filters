@@ -6,7 +6,13 @@ Wrappers for some of the [pcl filters](https://pointclouds.org/documentation/gro
 All the parameters are settable from the config file, but also online through the `dynamic_reconfigure` server. 
 Note that changing params with the `dynamic_reconfigure` server may take some seconds to have effect.
 
-No ROS2 version (yet).
+## ROS2
+ROS2 version work in progress. It only compiles for now. It also depends on the porting to ROS2 of the sensor_filters https://github.com/ctu-vras/sensor_filters/pull/7
+
+### TODO  
+- Fix weak ptr crash at initialization
+- Implement the functionalities of the old ROS1 dynamic reconfigure server
+
 
 ## Usage example
 See launch and config folders

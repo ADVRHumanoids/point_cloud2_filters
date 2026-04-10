@@ -4,7 +4,7 @@
 #include <point_cloud2_filters/FilterPointCloud2.hpp>
 #include <pcl/filters/filter_indices.h>
 
-#include <point_cloud2_filters/FilterIndicesPointCloud2Config.h>
+//#include <point_cloud2_filters/FilterIndicesPointCloud2Config.h>
 
 namespace point_cloud2_filters {
 
@@ -72,9 +72,9 @@ bool FilterIndicesPointCloud2::configure()
     
     // dynamic_reconfigure_clbk_ = boost::bind(&FilterIndicesPointCloud2::dynamicReconfigureClbk, this, _1, _2);
 
-    point_cloud2_filters::FilterIndicesPointCloud2Config initial_config;
-    initial_config.keep_organized = keep_organized_;
-    initial_config.negative = negative_;
+    // point_cloud2_filters::FilterIndicesPointCloud2Config initial_config;
+    // initial_config.keep_organized = keep_organized_;
+    // initial_config.negative = negative_;
 
     // dynamic_reconfigure_srv_->setConfigDefault(initial_config);
     // dynamic_reconfigure_srv_->updateConfig(initial_config);
@@ -86,27 +86,27 @@ bool FilterIndicesPointCloud2::configure()
     
 };
 
-void FilterIndicesPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::FilterIndicesPointCloud2Config &config, uint32_t /*level*/)
-{
+// void FilterIndicesPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::FilterIndicesPointCloud2Config &config, uint32_t /*level*/)
+// {
 
-    boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
+//     boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
 
     
-    if (keep_organized_ != config.keep_organized)
-    {
-        keep_organized_ = config.keep_organized;
-        filter_indices_->setKeepOrganized(keep_organized_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting keep_organized to: %d.", getName().c_str(), keep_organized_);
-    }
+//     if (keep_organized_ != config.keep_organized)
+//     {
+//         keep_organized_ = config.keep_organized;
+//         filter_indices_->setKeepOrganized(keep_organized_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting keep_organized to: %d.", getName().c_str(), keep_organized_);
+//     }
     
-    if (negative_ != config.negative)
-    {
-        negative_ = config.negative;
-        filter_indices_->setNegative(negative_);
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
-    }
+//     if (negative_ != config.negative)
+//     {
+//         negative_ = config.negative;
+//         filter_indices_->setNegative(negative_);
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting negative to: %d.", getName().c_str(), negative_);
+//     }
     
-}
+// }
 
 
 } //namespace point_cloud2_filters

@@ -4,7 +4,7 @@
 #include <point_cloud2_filters/FilterIndicesPointCloud2.hpp>
 #include <pcl/filters/crop_box.h>
 
-#include <point_cloud2_filters/CropBoxPointCloud2Config.hpp>
+//#include <point_cloud2_filters/CropBoxPointCloud2Config.hpp>
 
 namespace point_cloud2_filters {
 
@@ -98,13 +98,13 @@ bool CropBoxFilterPointCloud2::configure()
     
     // dynamic_reconfigure_clbk_ = boost::bind(&CropBoxFilterPointCloud2::dynamicReconfigureClbk, this, _1, _2);
 
-    point_cloud2_filters::CropBoxPointCloud2Config initial_config;
-    initial_config.min_x = min_x_;
-    initial_config.max_x = max_x_;
-    initial_config.min_y = min_y_;
-    initial_config.max_y = max_y_;
-    initial_config.min_z = min_z_;
-    initial_config.max_z = max_z_;
+    // point_cloud2_filters::CropBoxPointCloud2Config initial_config;
+    // initial_config.min_x = min_x_;
+    // initial_config.max_x = max_x_;
+    // initial_config.min_y = min_y_;
+    // initial_config.max_y = max_y_;
+    // initial_config.min_z = min_z_;
+    // initial_config.max_z = max_z_;
 
     // dynamic_reconfigure_srv_->setConfigDefault(initial_config);
     // dynamic_reconfigure_srv_->updateConfig(initial_config);
@@ -116,62 +116,62 @@ bool CropBoxFilterPointCloud2::configure()
     
 };
 
-void CropBoxFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::CropBoxPointCloud2Config &config, uint32_t /*level*/)
-{
+// void CropBoxFilterPointCloud2::dynamicReconfigureClbk (point_cloud2_filters::CropBoxPointCloud2Config &config, uint32_t /*level*/)
+// {
 
-    boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
-    bool max_to_update = false;
-    bool min_to_update = false;
+//     boost::recursive_mutex::scoped_lock lock(dynamic_reconfigure_mutex_);
+//     bool max_to_update = false;
+//     bool min_to_update = false;
     
-    if (min_x_ != config.min_x)
-    {
-        min_to_update = true;
-        min_x_ = config.min_x;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_x to: %f.", getName().c_str(), min_x_);
-    }
-    if (min_y_ != config.min_y)
-    {
-        min_to_update = true;
-        min_y_ = config.min_y;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_y to: %f.", getName().c_str(), min_y_);
-    }
-    if (min_z_ != config.min_z)
-    {
-        min_to_update = true;
-        min_z_ = config.min_z;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_z to: %f.", getName().c_str(), min_z_);
-    }
+//     if (min_x_ != config.min_x)
+//     {
+//         min_to_update = true;
+//         min_x_ = config.min_x;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_x to: %f.", getName().c_str(), min_x_);
+//     }
+//     if (min_y_ != config.min_y)
+//     {
+//         min_to_update = true;
+//         min_y_ = config.min_y;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_y to: %f.", getName().c_str(), min_y_);
+//     }
+//     if (min_z_ != config.min_z)
+//     {
+//         min_to_update = true;
+//         min_z_ = config.min_z;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting min_z to: %f.", getName().c_str(), min_z_);
+//     }
     
-    if (max_x_ != config.max_x)
-    {
-        max_to_update = true;
-        max_x_ = config.max_x;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_x to: %f.", getName().c_str(), max_x_);
-    }
-    if (max_y_ != config.max_y)
-    {
-        max_to_update = true;
-        max_y_ = config.max_y;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_y to: %f.", getName().c_str(), max_y_);
-    }
-    if (max_z_ != config.max_z)
-    {
-        max_to_update = true;
-        max_z_ = config.max_z;
-        RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_z to: %f.", getName().c_str(), max_z_);
-    }
+//     if (max_x_ != config.max_x)
+//     {
+//         max_to_update = true;
+//         max_x_ = config.max_x;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_x to: %f.", getName().c_str(), max_x_);
+//     }
+//     if (max_y_ != config.max_y)
+//     {
+//         max_to_update = true;
+//         max_y_ = config.max_y;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_y to: %f.", getName().c_str(), max_y_);
+//     }
+//     if (max_z_ != config.max_z)
+//     {
+//         max_to_update = true;
+//         max_z_ = config.max_z;
+//         RCLCPP_DEBUG(logging_interface_->get_logger(), "[%s] Setting max_z to: %f.", getName().c_str(), max_z_);
+//     }
     
-    if (min_to_update) {
-        Eigen::Vector4f min_point;
-        min_point << min_x_, min_y_, min_z_, 0;
-        crop_box_->setMin(min_point);
-    }
-    if (max_to_update) {
-        Eigen::Vector4f max_point;
-        max_point << max_x_, max_y_, max_z_, 0;
-        crop_box_->setMax(max_point);
-    }
-}
+//     if (min_to_update) {
+//         Eigen::Vector4f min_point;
+//         min_point << min_x_, min_y_, min_z_, 0;
+//         crop_box_->setMin(min_point);
+//     }
+//     if (max_to_update) {
+//         Eigen::Vector4f max_point;
+//         max_point << max_x_, max_y_, max_z_, 0;
+//         crop_box_->setMax(max_point);
+//     }
+// }
 
 
 } //namespace point_cloud2_filters
